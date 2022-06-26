@@ -1,0 +1,92 @@
+
+.field-item .fieldName .fieldNameInput,
+.field-item .prefix .prefixInput,
+.field-item .fieldType .fieldTypeSelect,
+.field-item .logic .logicSelect,
+#database_name,
+#table_name,
+#table_size {
+    color: #1a1a1a;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    box-shadow: black 0 0;
+    outline-style: none;
+    border: 0px;
+    border-radius: 0px;
+    box-sizing: border-box;
+    font-family: "Microsoft soft";
+}
+
+.field-item .fieldName .fieldNameInput {
+    background: #fffae5;
+    border-bottom: #9c9c9c 1px solid;
+    padding: 5px 5px 3px 5px;
+    width: 130px;
+}
+
+.field-item .prefix .prefixInput,
+#database_name,
+#table_name {
+    border-bottom: #9c9c9c 1px solid;
+    padding: 5px 5px 3px 5px;
+    width: 130px;
+
+}
+
+.field-item .fieldName .fieldNameInput:focus,
+.field-item .prefix .prefixInput:focus,
+#table_name:focus {
+    border-color: #f07b00;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    #f07b00;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    #f07b00;
+}
+
+.field-item .logic .logicSelect,
+#table_size {
+    padding: 5px 15px;
+}
+
+.field-item .fieldType .fieldTypeSelect {
+    /*去除三角形*/
+    /*appearance: none;*/
+    background: #fffae5;
+    padding: 5px 15px;
+}
+
+.field-item .fieldType .fieldTypeSelect option {
+    background: white;
+}
+
+.footer {
+    /*margin-top: -100px;*/
+}
+
+.table-info {
+    margin-bottom: 20px;
+}
+
+#database_name,
+#table_name {
+    /*width: 150px;*/
+}
+
+.table-info label:nth-child(3),
+.table-info label:nth-child(5) {
+    margin-left: 20px;
+}
+
+.table-info input::-webkit-input-placeholder {
+    color: #cbcbcb;
+}
+
+.delete-button {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    color: white;
+    border: 0px;
+    background: rgb(202, 60, 60); /* this is a maroon */
+}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pure.css美国雅虎公司出品的一组轻量级、响应式纯css模块，适用于任何Web项目。">
+    <title>Ksara - 自定义表数据生成</title>
+    <link rel="stylesheet" th:href="@{/pure/pure.css}">
+
+    <link rel="stylesheet" href="https://www.purecss.cn/css/main-grid.css">
+    <link rel="stylesheet" href="https://www.purecss.cn/css/main.css">
+    <link rel="stylesheet" href="https://www.purecss.cn/css/home.css">
+    <link rel="stylesheet" href="https://www.purecss.cn/css/baby-blue.css">
+
+</head>
+<body>
+<div id="layout">
+    <a href="#menu" id="menuLink" class="menu-link"><span></span></a>
+    <div id="menu">
+        <div class="pure-menu">
+            <a class="pure-menu-heading" href="/">Pure</a>
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item">
+                    <a href="../start.html" class="pure-menu-link">开始使用</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../layouts.html" class="pure-menu-link">模板</a>
+                </li>
+                <li class="pure-menu-item menu-item-divided">
+                    <a href="../base.html" class="pure-menu-link">基础</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../grids.html" class="pure-menu-link">栅格</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../forms.html" class="pure-menu-link">表单</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../buttons.html" class="pure-menu-link">按钮</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../tables.html" class="pure-menu-link">表格</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../menus.html" class="pure-menu-link">菜单</a>
+                </li>
+                <li class="pure-menu-item menu-item-divided">
+                    <a href="../tools.html" class="pure-menu-link">工具</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../customize.html" class="pure-menu-link">定制</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="../extend.html" class="pure-menu-link">扩展</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="http://blog.purecss.io/" class="pure-menu-link" target="_blank">博客</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="https://github.com/yahoo/pure/releases/" class="pure-menu-link" target="_blank">最新版本</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="main">
+        <div class="header">
+            <h1>开始使用</h1>
+            <h2>用 Pure 开启你的新项目吧！</h2>
+        </div>
+        <div class="content">
+            <h2 id="add-pure-to-your-page" class="content-subhead">将 Pure 引入你的页面<a href="#add-pure-to-your-page" class="content-link" title="Heading anchor"></a></h2>
+            <p>
+                你可以借助 <b>free unpkg CDN</b> 添加 Pure ，而无需下载到本地。将下面的<code>&lt;link&gt;</code>内容直接复制添加到页面的<code>&lt;head&gt;</code>部分即可。
+            </p>
+        </div>
+        <div class="is-code-full">
+            <pre class="code code-wrap" data-language="html"><code class="rainbow"><span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">link</span></span> <span class="support attribute">rel</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">stylesheet</span><span class="string quote">"</span> <span class="support attribute">href</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">https://unpkg.com/purecss@2.0.3/build/pure-min.css</span><span class="string quote">"</span> <span class="support attribute">integrity</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">sha384-CCTZv2q9I9m3UOxRLaJneXrrqKwUNOzZ6NGEUMwHtShDJ+nCoiXJCAgi05KfkLGY</span><span class="string quote">"</span> <span class="support attribute">crossorigin</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">anonymous</span><span class="string quote">"</span><span class="support tag close">&gt;</span></code></pre>
+        </div>
+        <div class="content">
+            <aside>
+                <p>
+                    当然, 你也可以直接 <a href="https://github.com/pure-css/pure-release/archive/v1.0.0.zip">下载 Pure</a>, 或者 <a href="/customize.html">点击访问其他CDN</a> 获取 Pure.
+                </p>
+            </aside>
+            <h2 id="add-the-viewport-meta-element" class="content-subhead">添加 Viewport Meta 元素<a href="#add-the-viewport-meta-element" class="content-link" title="Heading anchor"></a></h2>
+            <p>
+                Viewport<code>meta</code>元素控制移动端浏览器的宽度和缩放。为了自适应设备的宽度，请将下面一行加入<code>&lt;head&gt;</code>中。
+            </p>
+        </div>
+        <div class="is-code-full">
+            <pre class="code code-wrap" data-language="html"><code class="rainbow"><span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">meta</span></span> <span class="support attribute">name</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">viewport</span><span class="string quote">"</span> <span class="support attribute">content</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">width=device-width, initial-scale=1</span><span class="string quote">"</span><span class="support tag close">&gt;</span></code></pre>
+        </div>
+        <div class="content">
+            <h2 id="understand-pure-grids" class="content-subhead">熟悉Pure的栅格（Grids）<a href="#understand-pure-grids" class="content-link" title="Heading anchor"></a></h2>
+            <p>
+                Pure的栅格系统非常简单。你可以使用<code>.pure-g</code>创建行, 使用<code>pure-u-*</code>创建列。
+            </p>
+
+            <p>
+                下面是1行3列的栅格：
+            </p>
+            <pre class="code" data-language="html"><code class="rainbow"><span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">div</span></span> <span class="support attribute">class</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">pure-g</span><span class="string quote">"</span><span class="support tag close">&gt;</span>
+	<span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">div</span></span> <span class="support attribute">class</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">pure-u-1-3</span><span class="string quote">"</span><span class="support tag close">&gt;</span><span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">p</span></span><span class="support tag close">&gt;</span>Thirds<span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">p</span></span><span class="support tag close">&gt;</span><span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">div</span></span><span class="support tag close">&gt;</span>
+	<span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">div</span></span> <span class="support attribute">class</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">pure-u-1-3</span><span class="string quote">"</span><span class="support tag close">&gt;</span><span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">p</span></span><span class="support tag close">&gt;</span>Thirds<span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">p</span></span><span class="support tag close">&gt;</span><span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">div</span></span><span class="support tag close">&gt;</span>
+	<span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">div</span></span> <span class="support attribute">class</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">pure-u-1-3</span><span class="string quote">"</span><span class="support tag close">&gt;</span><span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">p</span></span><span class="support tag close">&gt;</span>Thirds<span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">p</span></span><span class="support tag close">&gt;</span><span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">div</span></span><span class="support tag close">&gt;</span>
+<span class="support tag"><span class="support tag">&lt;</span><span class="support tag special">/</span><span class="support tag-name">div</span></span><span class="support tag close">&gt;</span></code></pre>
+        </div>
+        <div class="grids-example">
+            <div class="pure-g">
+                <img src="/img/20161225100047.png">
+            </div>
+        </div>
+        <div class="content">
+            <h2 id="responsive-grids" class="content-subhead">响应式栅格<a href="#responsive-grids" class="content-link" title="Heading anchor"></a></h2>
+            <p>
+                Pure的栅格系统是<b>移动设备优先</b>和<b>响应式</b>的, 你也可以<a href="#build-your-pure-starter-kit">自定义</a>CSS媒体查询和栅格的class名，我们先来看个普通使用的例子。
+            </p>
+
+            <p>
+                首先引入<code>grids-responsive.css</code>:
+            </p>
+            <pre class="code" data-language="html"><code class="rainbow"><span class="comment html">&lt;!--[if lte IE 8]&gt;
+        &lt;link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css"&gt;
+    &lt;![endif]--&gt;</span>
+    <span class="comment html">&lt;!--[if gt IE 8]&gt;&lt;!--&gt;</span>
+        <span class="support tag"><span class="support tag">&lt;</span><span class="support tag-name">link</span></span> <span class="support attribute">rel</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">stylesheet</span><span class="string quote">"</span> <span class="support attribute">href</span><span class="support operator">=</span><span class="string quote">"</span><span class="string value">https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css</span><span class="string quote">"</span><span class="support tag close">&gt;</span>
+    <span class="comment html">&lt;!--&lt;![endif]--&gt;</span></code></pre>
+            <p>
+                下面是<code>grids-responsive.css</code>文件中默认的响应判断：
+            </p>
+            <div class="table-responsive">
+                <table class="mq-table pure-table-bordered pure-table">
+                    <thead>
+                    <tr>
+                        <th class="highlight">关键词</th>
+                        <th class="highlight">CSS 媒体查询</th>
+                        <th>适用于</th>
+                        <th>Class名</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="highlight"><i>无</i></td>
+                        <td class="highlight"><i>无</i></td>
+                        <td><i>所有</i></td>
+                        <td><code>.pure-u-*</code></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight"><b><code>sm</code></b></td>
+                        <td class="mq-table-mq highlight"><code>@media screen and (min-width: 35.5em)</code></td>
+                        <td>≥ <b>568px</b></td>
+                        <td><code>.pure-u-<b>sm</b>-*</code></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight"><b><code>md</code></b></td>
+                        <td class="mq-table-mq highlight"><code>@media screen and (min-width: 48em)</code></td>
+                        <td>≥ <b>768px</b></td>
+                        <td><code>.pure-u-<b>md</b>-*</code></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight"><b><code>lg</code></b></td>
+                        <td class="mq-table-mq highlight"><code>@media screen and (min-width: 64em)</code></td>
+                        <td>≥ <b>1024px</b></td>
+                        <td><code>.pure-u-<b>lg</b>-*</code></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight"><b><code>xl</code></b></td>
+                        <td class="mq-table-mq highlight"><code>@media screen and (min-width: 80em)</code></td>
+                        <td>≥ <b>1280px</b></td>
+                        <td><code>.pure-u-<b>xl</b>-*</code></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                下面是例子：
+            </p>
+        </div>
+        <div class="grids-example">
+            <img src="/img/20161225094509.png">
+        </div>
+        <div class="content">
+            <aside>
+                <p>
+                    这里有几套制作好的<a href="/layouts.html">免费模板</a>，你可以下载并开始应用于你的新项目吧！Happy coding!
+                </p>
+            </aside>
+        </div>
+        <div class="footer">
+            <div class="legal pure-g">
+                <div class="pure-u-1 u-sm-1-2">
+                    <p class="legal-license">
+                        本网站由 <a href="https://github.com/yahoo/pure">Pure v1.0.0</a> 强力驱动<br>
+                        本网站所用代码均符合 <a href="https://github.com/yahoo/pure-site/blob/master/LICENSE.md">Yahoo BSD License</a> ,另有说明的除外。
+                    </p>
+                </div>
+                <div class="pure-u-1 u-sm-1-2">
+                    <ul class="legal-links">
+                        <li><a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=a46006379f266e356e3e7985c111dc07f99fc5fe712ad759c0482d1e6f544fee"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="个人站长交流群" title="个人站长交流群"></a></li>
+                        <li><a href="https://github.com/yahoo/pure/">GitHub 项目</a></li>
+                        <li><a href="https://hackerone.com/yahoo/">Security Contact Info</a></li>
+                    </ul>
+                    <p class="legal-copyright">
+                        &copy; 2016 Purecss.cn Inc. All rights reserved.
+                    </p>
+                    <script>
+                        var _hmt = _hmt || [];
+                        (function() {
+                            var hm = document.createElement("script");
+                            hm.src = "https://hm.baidu.com/hm.js?619a1f7164f4fef88b983af5dc34a690";
+                            var s = document.getElementsByTagName("script")[0];
+                            s.parentNode.insertBefore(hm, s);
+                        })();
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>
