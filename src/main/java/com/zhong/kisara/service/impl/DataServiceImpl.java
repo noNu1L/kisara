@@ -1,8 +1,10 @@
 package com.zhong.kisara.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.zhong.kisara.KisaraApplication;
 import com.zhong.kisara.bean.TableField;
 import com.zhong.kisara.service.DataService;
+import com.zhong.kisara.utils.ClassJDBC;
 import com.zhong.kisara.utils.Gender;
 import com.zhong.kisara.utils.datatype.DoubleType;
 import com.zhong.kisara.utils.datatype.VarcharType;
@@ -36,51 +38,76 @@ public class DataServiceImpl implements DataService {
     private VarcharType varcharType;
 
 
+    /**
+     * 添加数据
+     *
+     * @param connection     连接
+     * @param tableName      表名
+     * @param tableFieldList 表字段列表
+     * @param dataSize       数据大小
+     * @return boolean
+     */
     @Override
     public boolean addData(Connection connection, String tableName, List<TableField> tableFieldList, Integer dataSize) {
-
 
         for (int i = 0; i < dataSize; i++) {
             StringBuilder value = new StringBuilder();
             for (int j = 0; j < tableFieldList.size(); j++) {
-
+                value.append("'");
                 if (StrUtil.isNotBlank(tableFieldList.get(j).getPrefix())) {
-                    value.append("'").append(tableFieldList.get(j).getPrefix()).append("'");
+                    value.append(tableFieldList.get(j).getPrefix());
                 }
 
-                String logicName = tableFieldList.get(j).getLogic();
-                switch (logicName) {
+                // switch 条件与 fieldConfig.json 一一对应，谨慎更改
+                switch (tableFieldList.get(j).getLogic()) {
                     case "仅前缀":
+                        // value.append(prefix);
                         break;
                     case "名字":
-                        value.append("'").append(varcharType.cnName(Gender.NOT_SPECIFY)).append("'");
+                        value.append(varcharType.cnName(Gender.NOT_SPECIFY));
                         break;
-                    case "phone":
-                        value.append("'").append(varcharType.phone()).append("'");
+                    case "手机号":
+                        value.append(varcharType.phone());
+                        break;
+                    case "UUID":
+                        value.append(varcharType.uuid());
+                        break;
+                    case "NanoID":
+                        value.append(varcharType.nanoid());
+                        break;
+                    case "email":
+                        value.append(varcharType.email());
                         break;
                     default:
                         value.append("");
                         break;
                 }
+                value.append("'");
+                // 非最后一个值，添加 , 分割
                 if (j < tableFieldList.size() - 1) {
                     value.append(",");
                 }
 
             }
-            String sql = "insert into " + tableName + " value (" + value + ")";
+            String sql = String.format("insert into %s value (%s)", tableName, value);
 
             try {
+                if (KisaraApplication.noCreateData) {
+                    return false;
+                }
+
                 connection.prepareStatement(sql).execute();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error(e.toString());
+                return false;
             }
             log.info("add：{}", sql);
 
         }
-
+        ClassJDBC.closeResource(connection, null, null);
         log.info("{}", tableFieldList);
         log.info("{}", dataSize);
 
-        return false;
+        return true;
     }
 }

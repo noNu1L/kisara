@@ -1,5 +1,6 @@
 package com.zhong.kisara.controller;
 
+import com.zhong.kisara.KisaraApplication;
 import com.zhong.kisara.bean.DataBase;
 import com.zhong.kisara.service.DataBaseService;
 import com.zhong.kisara.utils.ClassJDBC;
@@ -13,6 +14,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Map;
 
+/**
+ * @author zhonghanbo
+ */
 @RestController
 public class TableDataController {
 
@@ -31,8 +35,11 @@ public class TableDataController {
         ClassJDBC jdbc = new ClassJDBC("jdbc:mysql://127.0.0.1:3306", "root", "123456");
         Connection connection = jdbc.getConnection();
         PreparedStatement ps = null;
+        if (KisaraApplication.justCheckData) {
+            return DataBase.toString();
+        }
         dataService.createDB("kisara", connection);
-        dataService.createData("kisara", "tbtest", connection, DataBase.getFieldData(), 100);
+        dataService.createData("kisara", "tbtest1", connection, DataBase.getFieldData(), 1000);
         return null;
     }
 

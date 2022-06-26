@@ -5,6 +5,9 @@ import cn.hutool.core.util.IdUtil;
 import com.zhong.kisara.utils.datatype.IntType;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author zhonghanbo
+ */
 @Component
 public class IntTypeImpl implements IntType {
     @Override

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 // import static com.zhong.kisara.utils.Constants.FIELD_LOGIC;
 // import static com.zhong.kisara.utils.Constants.FIELD_TYPE;
 
+/**
+ * @author zhonghanbo
+ */
 @Controller
 public class TableController {
 

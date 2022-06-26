@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import java.math.RoundingMode;
 
 
+/**
+ * @author zhonghanbo
+ */
 @Component
 public class DoubleTypeImpl implements DoubleType {
     @Override

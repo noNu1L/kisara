@@ -67,11 +67,10 @@ let fieldTypeOnclick = (tag) => {
 
             logic.childNodes.forEach(x => {
                 if (!isBlank(x.classList) && x.classList.contains("logicSelect")) {
-                    let logicSelect = x;
                     for (let fieldType of fieldTypes[tag.value]) {
                         let option = document.createElement("option")
                         option.innerHTML = fieldType
-                        logicSelect.appendChild(option)
+                        x.appendChild(option)
                     }
                 }
             })
@@ -164,6 +163,15 @@ let checkTableData = () => {
 }
 
 let checkFieldData = () => {
+    let allPrimary = document.querySelectorAll(".primary-checkbox");
+    // console.log(primary);
+
+    allPrimary.forEach(x => {
+            console.log(x.checked)
+            console.log(x.name)
+            // console.log(x)
+        }
+    )
     let allFieldNameInput = document.querySelectorAll(".fieldNameInput");
     let allFieldType = document.querySelectorAll(".fieldTypeSelect");
     let allLogicSelect = document.querySelectorAll(".logicSelect");
@@ -172,7 +180,7 @@ let checkFieldData = () => {
     // console.log(Object.prototype.toString.call(allFieldNameInput));
     if (!checkName(allFieldNameInput, "字段名")) return false;
 
-    let fieldDataArray = new Array();
+    let fieldDataArray = [];
     for (let i = 0; i < dataLength; i++) {
         if (allFieldType[i].value === "int" && isNaN(allPrefixInput[i].value)) {
             alert("数据类型与前缀不合符")
@@ -193,6 +201,10 @@ let checkFieldData = () => {
         tempData[allFieldType[i].name] = allFieldType[i].value;
         tempData[allLogicSelect[i].name] = allLogicSelect[i].value;
         tempData[allPrefixInput[i].name] = allPrefixInput[i].value;
+        tempData[allPrimary[i].name] = allPrimary[i].checked;
+        // console.log(allPrimary[i].name);
+        // console.log(allPrimary[i].checked);
+
         fieldDataArray[i] = tempData
     }
 
@@ -205,7 +217,7 @@ let checkFieldData = () => {
 
 let summitData = () => {
     // if (isBlank(JSONFieldData)) return false
-    console.log("summitData：" + tableData.fieldData)
+    console.log(tableData.fieldData)
     axios({
         method: "post",
         url: "/rules",

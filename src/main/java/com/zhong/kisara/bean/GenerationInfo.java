@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author zhonghanbo
+ */
 @Data
 public class GenerationInfo {
     private String tableName;

@@ -1,7 +1,6 @@
 package com.zhong.kisara;
 
 import cn.hutool.core.util.IdUtil;
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.zhong.kisara.service.DataBaseService;
 import com.zhong.kisara.utils.ClassJDBC;
 import com.zhong.kisara.utils.datatype.DoubleType;
@@ -30,14 +29,15 @@ class KisaraApplicationTests {
 
     @Test
     void contextLoads() throws IOException {
-        System.out.println(UUID.randomUUID());
-        System.out.println(NanoIdUtils.randomNanoId());
-        System.out.println(IdUtil.nanoId(32));
-        System.out.println();
-        long dataCenterId = IdUtil.getDataCenterId(4);
-        System.out.println(dataCenterId);
-        long workerId = IdUtil.getWorkerId(dataCenterId, 16);
-        System.out.println(IdUtil.getSnowflake(workerId, dataCenterId).nextId());
+        // System.out.println(UUID.randomUUID());
+        // System.out.println(IdUtil.nanoId(32));
+        // System.out.println();
+        // long dataCenterId = IdUtil.getDataCenterId(4);
+        // System.out.println(dataCenterId);
+        // long workerId = IdUtil.getWorkerId(dataCenterId, 16);
+        // System.out.println(IdUtil.getSnowflake(workerId, dataCenterId).nextId());
+        System.out.println(varcharType.phone());
+
     }
 
     @Test

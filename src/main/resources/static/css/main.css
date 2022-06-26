@@ -83,10 +83,21 @@
 }
 
 .delete-button {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-    color: white;
-    border: 0px;
-    background: rgb(202, 60, 60); /* this is a maroon */
+    /*width: 20px;*/
+    /*height: 20px;*/
+    /*margin: 0;*/
+    /*color: white;*/
+    /*border: 0px;*/
+    /*background: rgb(202, 60, 60); !* this is a maroon *!*/
+    /*position: relative;*/
+    /*right: 30px;*/
+    /*bottom: 20px;*/
+    /*margin-left: 10px;*/
+}
+
+.primary-checkbox {
+    /*position: relative;*/
+    /*right: 10px;*/
+    /*bottom: 20px;*/
+    margin-left: 10px;
 }
