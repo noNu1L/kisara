@@ -11,40 +11,30 @@
 
     <th:block th:include="common::menu"></th:block>
     <div id="main">
-
         <div class="header">
             <h2>模拟数据生成工具</h2>
-            <!--<h2>简单的CSS表单样式</h2>-->
         </div>
         <div class="content">
-
             <h2 id="stacked-form" class="content-subhead">自定义规则生成<a href="#stacked-form" class="content-link"
                                                                     title="Heading anchor"></a></h2>
-            <p>
-                格式：
-                <!--加了class <code>pure-form</code>后，再加个class <code>pure-form-stacked</code>可实现如下效果：-->
-            </p>
+            <p>格式：</p>
             <p>UUID：448369fa-2a3d-4c90-9be6-67e5dae8ed4e</p>
             <p>NanoID（32位）：FEbXpOPma1kXDVuovbmGk</p>
             <p>3.xxoxxxoxx</p>
-
 
             <form class="pure-form" th:action="@{/rules}" method="post">
                 <fieldset>
                     <legend>填写数据生成相关配置</legend>
                 </fieldset>
-
                 <div class="table-info">
-                    <label for="database_name">数据库名：</label>
-                    <input id="database_name" class="pure-u-1-5" type="text"
+                    <label for="database-name">数据库名：</label>
+                    <input id="database-name" class="pure-u-1-5" type="text"
                            placeholder="不存在时会创建">
-
-                    <label for="table_name">表名：</label>
-                    <input id="table_name" class="pure-u-1-5" type="text"
+                    <label for="table-name">表名：</label>
+                    <input id="table-name" class="pure-u-1-5" type="text"
                            placeholder="不存在时会创建">
-
-                    <label for="table_size">数据大小：</label>
-                    <select id="table_size" class="pure-input-1-5">
+                    <label for="table-size">数据大小：</label>
+                    <select id="table-size" class="pure-input-1-5">
                         <option>100</option>
                         <option>1000</option>
                         <option>1_0000</option>
@@ -69,26 +59,13 @@
 
                         <!--测试项 1-->
                         <tr class="field-item">
-                            <td class="highlight fieldName">
-                                <input class="fieldNameInput" name="fieldName" value="id" title="字段">
-                            </td>
-
-                            <td class="highlight fieldType">
-                                <select class="fieldTypeSelect" name="fieldType" onclick="fieldTypeOnclick(this)">
-                                    <!--<option title="叉叉叉">xxx</option>-->
-                                </select>
-                            </td>
-                            <td class="logic">
-                                <select class="logicSelect" name="logic"></select>
-                            </td>
-                            <td class="prefix">
-                                <input class="prefixInput" name="prefix">
-
-                            </td>
-                            <td class="primary">
-                                <input type="checkbox" class="primary-checkbox" name="primary">
-                            </td>
-
+                            <td class="highlight fieldName"><input class="fieldNameInput" name="fieldName" value="id"
+                                                                   title="字段"></td>
+                            <td class="highlight fieldType"><select class="fieldTypeSelect" name="fieldType"
+                                                                    onclick="fieldTypeOnclick(this)"></select></td>
+                            <td class="logic"><select class="logicSelect" name="logic"></select></td>
+                            <td class="prefix"><input class="prefixInput" name="prefix"></td>
+                            <td class="primary"><input type="checkbox" class="primary-checkbox" name="primary"></td>
                             <!--<td class="delete">-->
                             <!--    <button class="delete-button">x</button>-->
                             <!--</td>-->
@@ -96,42 +73,27 @@
 
                         <!--测试项 2-->
                         <tr class="field-item">
-                            <td class="highlight fieldName">
-                                <input class="fieldNameInput" name="fieldName" value="name">
+                            <td class="highlight fieldName"><input class="fieldNameInput" name="fieldName" value="name">
                             </td>
-
-                            <td class="highlight fieldType">
-                                <select class="fieldTypeSelect" name="fieldType" onclick="fieldTypeOnclick(this)">
-                                </select>
+                            <td class="highlight fieldType"><select class="fieldTypeSelect" name="fieldType"
+                                                                    onclick="fieldTypeOnclick(this)"></select>
                             </td>
-                            <td class="logic">
-                                <select class="logicSelect" name="logic"></select>
-                            </td>
-
-                            <td class="prefix">
-                                <input class="prefixInput" name="prefix">
-                            </td>
-
-                            <td class="primary">
-                                <input type="checkbox" class="primary-checkbox" name="primary">
-                            </td>
-
+                            <td class="logic"><select class="logicSelect" name="logic"></select></td>
+                            <td class="prefix"><input class="prefixInput" name="prefix"></td>
+                            <td class="primary"><input type="checkbox" class="primary-checkbox" name="primary"></td>
                             <!--<td class="delete">-->
                             <!--    <button class="delete-button">X</button>-->
                             <!--</td>-->
                         </tr>
-
-
                         </tbody>
                     </table>
-
                 </div>
-                <button id="add-field" class="pure-button">添加字段</button>
-                <button id="fromSubmit" type="submit" class="pure-button pure-button-primary">生成</button>
+
+                <input id="add-field" class="pure-button" value="添加字段" onclick="addField(event)"/>
+                <input id="fromSubmit" type="submit" value="生成" class="pure-button pure-button-primary"
+                       onclick="formSubmit(event)"/>
             </form>
-
         </div>
-
         <th:block th:include="common::footer"></th:block>
     </div>
 </div>

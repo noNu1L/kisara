@@ -3,39 +3,43 @@
 .field-item .prefix .prefixInput,
 .field-item .fieldType .fieldTypeSelect,
 .field-item .logic .logicSelect,
-#database_name,
-#table_name,
-#table_size {
+#database-name,
+#table-name,
+#table-size {
     color: #1a1a1a;
     /*width: 100%;*/
     /*height: 100%;*/
     box-shadow: black 0 0;
     outline-style: none;
-    border: 0px;
-    border-radius: 0px;
+    border: 0;
+    border-radius: 0;
     box-sizing: border-box;
-    font-family: "Microsoft soft";
+    font-family: "Microsoft soft"
 }
 
 .field-item .fieldName .fieldNameInput {
     background: #fffae5;
     border-bottom: #9c9c9c 1px solid;
     padding: 5px 5px 3px 5px;
-    width: 130px;
+    width: 100px;
 }
 
 .field-item .prefix .prefixInput,
-#database_name,
-#table_name {
+#database-name,
+#table-name {
     border-bottom: #9c9c9c 1px solid;
     padding: 5px 5px 3px 5px;
     width: 130px;
+}
 
+.field-item .prefix .prefixInput {
+    width: 80px;
 }
 
 .field-item .fieldName .fieldNameInput:focus,
 .field-item .prefix .prefixInput:focus,
-#table_name:focus {
+#database-name:focus,
+#table-name:focus {
     border-color: #f07b00;
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
@@ -61,16 +65,16 @@
 }
 
 .footer {
-    /*margin-top: -100px;*/
+
 }
 
 .table-info {
     margin-bottom: 20px;
 }
 
-#database_name,
-#table_name {
-    /*width: 150px;*/
+#database-name,
+#table-name {
+
 }
 
 .table-info label:nth-child(3),
@@ -83,21 +87,18 @@
 }
 
 .delete-button {
-    /*width: 20px;*/
-    /*height: 20px;*/
-    /*margin: 0;*/
-    /*color: white;*/
-    /*border: 0px;*/
-    /*background: rgb(202, 60, 60); !* this is a maroon *!*/
-    /*position: relative;*/
-    /*right: 30px;*/
-    /*bottom: 20px;*/
-    /*margin-left: 10px;*/
+
 }
 
 .primary-checkbox {
-    /*position: relative;*/
-    /*right: 10px;*/
-    /*bottom: 20px;*/
     margin-left: 10px;
+}
+
+#database_connection > .pure-menu-link {
+    color: #e08989;
+}
+
+#connection-InfoRecord {
+    margin-right: 20px;
+    background-color: #e08989;
 }

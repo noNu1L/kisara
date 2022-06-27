@@ -1,7 +1,9 @@
 package com.zhong.kisara.bean;
 
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
+import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
@@ -10,11 +12,8 @@ import java.util.List;
  */
 @Data
 public class DataBase {
-    private String dbName;
+    private String dataBaseName;
     private String tableName;
-    private Integer dataSize;
+    private Long dataSize;
     private List<TableField> fieldData;
-    // private String url;
-    // private String username;
-    // private String password;
 }

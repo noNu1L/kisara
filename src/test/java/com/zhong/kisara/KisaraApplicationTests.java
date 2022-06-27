@@ -1,8 +1,8 @@
 package com.zhong.kisara;
 
-import cn.hutool.core.util.IdUtil;
 import com.zhong.kisara.service.DataBaseService;
 import com.zhong.kisara.utils.ClassJDBC;
+import com.zhong.kisara.utils.datatype.DateTimeType;
 import com.zhong.kisara.utils.datatype.DoubleType;
 import com.zhong.kisara.utils.datatype.VarcharType;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.UUID;
 
 @SpringBootTest
 class KisaraApplicationTests {
@@ -26,6 +25,12 @@ class KisaraApplicationTests {
     @Resource
     private VarcharType varcharType;
 
+    // @Resource
+    // private DateType dateType;
+
+    @Resource
+    private DateTimeType dateTimeType;
+
 
     @Test
     void contextLoads() throws IOException {
@@ -36,7 +41,7 @@ class KisaraApplicationTests {
         // System.out.println(dataCenterId);
         // long workerId = IdUtil.getWorkerId(dataCenterId, 16);
         // System.out.println(IdUtil.getSnowflake(workerId, dataCenterId).nextId());
-        System.out.println(varcharType.phone());
+        System.out.println(dateTimeType.randomDateTime());
 
     }
 
@@ -45,7 +50,7 @@ class KisaraApplicationTests {
         ClassJDBC jdbc = new ClassJDBC("jdbc:mysql://127.0.0.1:3306", "root", "123456");
         Connection connection = jdbc.getConnection();
         PreparedStatement ps = null;
-        dataService.createDB("test", connection);
+        dataService.createDataBase("test", connection);
 
 
     }

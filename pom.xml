@@ -18,17 +18,6 @@
     </properties>
     <packaging>jar</packaging>
     <dependencies>
-        <!--<dependency>-->
-        <!--    <groupId>org.springframework.boot</groupId>-->
-        <!--    <artifactId>spring-boot-starter-jdbc</artifactId>-->
-        <!--</dependency>-->
-
-        <!--mysql的驱动-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -47,17 +36,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!--配置文件实用工具-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -65,18 +51,33 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.aventrix.jnanoid/jnanoid -->
-        <!--<dependency>-->
-        <!--    <groupId>com.aventrix.jnanoid</groupId>-->
-        <!--    <artifactId>jnanoid</artifactId>-->
-        <!--    <version>2.0.0</version>-->
-        <!--    <scope>runtime</scope>-->
-        <!--</dependency>-->
+        <!--mysql的驱动-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.29</version>
+        </dependency>
 
+
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--hutool，使用工具箱-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.8.3</version>
+        </dependency>
+
+        <!--随机工具箱-->
+        <dependency>
+            <groupId>com.apifan.common</groupId>
+            <artifactId>common-random</artifactId>
+            <version>1.0.14</version>
         </dependency>
 
     </dependencies>

@@ -1,53 +1,64 @@
 let fieldTypeTags = document.querySelectorAll(".fieldType");
 let fieldItemTags = document.querySelectorAll(".field-item");
 
-let fromSubmit = document.getElementById("fromSubmit");
-let addField = document.getElementById("add-field");
-
 let fieldTypes = null;
-let JSONFieldData = null;
 
 let tableData = {
-    dbName: null,
+    dataBaseName: null,
     tableName: null,
     dataSize: null,
     fieldData: null
 };
 
+let connectionStatus = false;
+
+/**
+ * HTML 加载完毕后做以下的事情
+ *
+ * 1.检查是否已经连接数据库
+ * 2.从后端获取字段生成配置
+ * 3.给每项字段[数据类型] [生成逻辑]赋值选项
+ */
 window.onload = () => {
+    // 判断是否已经连接
+    axios({
+        method: "get",
+        url: "/dataBaseConnection"
+    })
+        .then((response) => {
+            console.log(response);
+            if (response.data === true) {
+                let connectionStatusTag = document.getElementById("connection-status");
+                connectionStatusTag.innerHTML = "数据库已连接"
+                connectionStatusTag.style.color = "#006ed3"
+                connectionStatus = true;
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
     axios.get('/getFieldRule')
         .then(function (response) {
             if (response.status === 200) {
                 fieldTypes = response.data;
 
-                //初始化
-                // 遍历每一项字段
+                // 初始化 遍历页面每一项字段
                 fieldItemTags.forEach(fieldItemTag => {
-
-                    // 遍历字段的 HTML 标签
-                    fieldItemTag.childNodes.forEach(childNode => {
-                        if (!isBlank(childNode.classList)) {
-
-                            // 给 fieldType 标签赋值,初始化
-                            if (childNode.classList.contains("fieldType")) {
-                                for (let fieldType in fieldTypes) {
-                                    let option = document.createElement("option")
-                                    option.innerHTML = fieldType
-                                    childNode.childNodes[1].appendChild(option)
-                                }
-                            }
-
-                            // 给 logic 标签赋值,初始化
-                            if (childNode.classList.contains("logic")) {
-                                for (let fieldType of fieldTypes.int) {
-                                    // console.log(fieldType);
-                                    let option = document.createElement("option")
-                                    option.innerHTML = fieldType
-                                    childNode.childNodes[1].appendChild(option)
-                                }
-                            }
+                    for (let fieldTypeSelect of fieldItemTag.getElementsByClassName("fieldTypeSelect")) {
+                        for (let fieldType in fieldTypes) {
+                            let option = document.createElement("option")
+                            option.innerHTML = fieldType
+                            fieldTypeSelect.appendChild(option)
                         }
-                    })
+                    }
+                    for (let logicSelect of fieldItemTag.getElementsByClassName("logicSelect")) {
+                        for (let fieldType of fieldTypes.int) {
+                            let option = document.createElement("option")
+                            option.innerHTML = fieldType
+                            logicSelect.appendChild(option)
+                        }
+                    }
                 })
             }
         })
@@ -56,11 +67,17 @@ window.onload = () => {
         });
 }
 
+/**
+ * 切换数据类型时，生成逻辑也会随之切换
+ * @param tag
+ */
 let fieldTypeOnclick = (tag) => {
 
+    // TODO 获取有更好的写法
     //从父节点获取，避免 HTML 改动出错
     let parentNode = tag.parentNode.parentNode;
     parentNode.childNodes.forEach(childNode => {
+
         if (!isBlank(childNode.classList) && childNode.classList.contains("logic")) {
             let logic = childNode
             removeChildNode(logic, "logicSelect");
@@ -75,7 +92,7 @@ let fieldTypeOnclick = (tag) => {
                 }
             })
         }
-    });
+    })
 }
 
 /**
@@ -87,20 +104,32 @@ let isBlank = (obj) => {
     return obj === null || obj === undefined || obj === "";
 }
 
-fromSubmit.onclick = (event) => {
+/**
+ * 提交数据
+ * 提交前会对 连接状态 / 数据名 / 表名 / 字段规范进行检查
+ * @param event
+ */
+let formSubmit = (event) => {
     //阻止默认表单提交
     event.preventDefault();
-    // checkTableData()
-    if (checkFieldData()) {
-        console.log("cccc")
+
+    if (!connectionStatus) {
+        alert("请先连接数据库")
+
+    } else if (checkFieldData() && checkTableData()) {
+        console.log("formSubmit")
         summitData()
     }
 }
 
-addField.onclick = (event) => {
+/**
+ *  TODO 应该使用隐藏的 tr 来复制
+ * 添加字段
+ * @param event
+ */
+let addField = (event) => {
     //阻止默认表单提交
     event.preventDefault();
-
     //克隆 / 复制 添加一个节点
     let node = fieldItemTags[0].cloneNode(true);
     fieldItemTags[0].parentNode.append(node);
@@ -125,7 +154,6 @@ let isChineseChar = (str) => {
 let checkName = (nameList, objName) => {
     if (isBlank(objName)) objName = "";
     if (typeof nameList == "string") {
-        // console.log("string");
         nameList = new Array({value: nameList})
     }
 
@@ -149,27 +177,37 @@ let checkName = (nameList, objName) => {
     return true
 }
 
+/**
+ * 检查 数据库名，表名，是否正确
+ * 并设置值
+ * @returns {boolean}
+ */
 let checkTableData = () => {
-    let dataBaseName = document.getElementById("database_name").value;
-    let tableName = document.getElementById("table_name").value;
-    let tableSize = document.getElementById("table_size").value;
+    let dataBaseName = document.getElementById("database-name").value;
+    let tableName = document.getElementById("table-name").value;
+    let tableSize = document.getElementById("table-size").value;
 
-    // console.log(tableSize);
     if (checkName(dataBaseName, "数据库名") && checkName(tableName, "表名")) {
-
+        tableData.dataBaseName = dataBaseName;
+        tableData.tableName = tableName;
+        tableData.dataSize = tableSize;
+        return true
     } else {
+        // alert("请填写正确数据库名和表名")
         return false;
     }
 }
 
+/**
+ * 检查各字段是否正确，并设置值
+ * @returns {boolean}
+ */
 let checkFieldData = () => {
     let allPrimary = document.querySelectorAll(".primary-checkbox");
-    // console.log(primary);
 
     allPrimary.forEach(x => {
             console.log(x.checked)
             console.log(x.name)
-            // console.log(x)
         }
     )
     let allFieldNameInput = document.querySelectorAll(".fieldNameInput");
@@ -177,7 +215,6 @@ let checkFieldData = () => {
     let allLogicSelect = document.querySelectorAll(".logicSelect");
     let allPrefixInput = document.querySelectorAll(".prefixInput");
     let dataLength = allFieldNameInput.length;
-    // console.log(Object.prototype.toString.call(allFieldNameInput));
     if (!checkName(allFieldNameInput, "字段名")) return false;
 
     let fieldDataArray = [];
@@ -202,13 +239,9 @@ let checkFieldData = () => {
         tempData[allLogicSelect[i].name] = allLogicSelect[i].value;
         tempData[allPrefixInput[i].name] = allPrefixInput[i].value;
         tempData[allPrimary[i].name] = allPrimary[i].checked;
-        // console.log(allPrimary[i].name);
-        // console.log(allPrimary[i].checked);
 
         fieldDataArray[i] = tempData
     }
-
-    // tableData.fieldData = JSON.stringify(fieldDataArray);
     tableData.fieldData = fieldDataArray
     console.log(tableData.fieldData);
     return true
@@ -216,7 +249,6 @@ let checkFieldData = () => {
 
 
 let summitData = () => {
-    // if (isBlank(JSONFieldData)) return false
     console.log(tableData.fieldData)
     axios({
         method: "post",
@@ -224,7 +256,6 @@ let summitData = () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        // data: tableData.fieldData
         data: JSON.stringify(tableData)
     })
         .then((response) => {
@@ -250,7 +281,6 @@ let removeChildNode = (node, parenClassName) => {
     // removeAllChildNode
     if (isBlank(parenClassName)) {
         for (let i = childNodes.length - 1; i >= 0; i--) {
-            // console.log("remove childNodes :" + i)
             node.removeChild(childNodes[i])
         }
         return;
@@ -264,4 +294,59 @@ let removeChildNode = (node, parenClassName) => {
         }
         removeChildNode(childNodes[i], parenClassName)
     }
+}
+
+let connectionSubmit = (event) => {
+    event.preventDefault();
+    let url = document.getElementById("dataBase-url").value;
+    let username = document.getElementById("dataBase-username").value;
+    let password = document.getElementById("dataBase-password").value;
+    let method = document.getElementById("connection-method").value;
+    let saveConnectionInfo = document.getElementById("save-connection-info").checked;
+
+    let connectInfo = new FormData();
+    connectInfo.append("url", url)
+    connectInfo.append("username", username)
+    connectInfo.append("password", password)
+    console.log(connectInfo);
+    axios({
+        method: "post",
+        url: "/dataBaseConnection",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: connectInfo
+    })
+        .then((response) => {
+            if (response.data.success) {
+                alert(response.data.data)
+                //存储登录信息到本地
+                if (saveConnectionInfo) {
+                    localStorage.setItem("url", url);
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("password", password);
+                }
+
+            } else {
+                alert(response.data.errorMsg)
+                return;
+            }
+            console.log(response);
+        })
+        .catch((error) => {
+            // alert("连接错误，请检查连接信息")
+            console.log(error);
+        });
+}
+
+let connectionInfoRecord = (event) => {
+    event.preventDefault();
+    let item = localStorage.getItem("url");
+    if (isBlank(item)) {
+        alert("没有相关登录信息")
+        return;
+    }
+    document.getElementById("dataBase-url").value = item;
+    document.getElementById("dataBase-username").value = localStorage.getItem("username");
+    document.getElementById("dataBase-password").value = localStorage.getItem("password");
 }

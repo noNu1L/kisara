@@ -14,9 +14,7 @@ import java.math.RoundingMode;
 public class DoubleTypeImpl implements DoubleType {
     @Override
     public double score() {
-        double x = RandomUtil.randomDouble(0, 100);
-        // System.out.println(x - (int) x);
-
+        double x = RandomUtil.randomDouble(0, 101);
         if ((x - (int) x) > 0.5 && (int) x <= 99) {
             return ((int) x + 0.5);
         }
