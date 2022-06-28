@@ -37,10 +37,6 @@ public class DataBaseServiceImpl implements DataBaseService {
     @Resource
     private DataService dataService;
 
-    // public DataBaseServiceImpl(DataService dataService) {
-    //     this.dataService = dataService;
-    // }
-
     /**
      * 读取JSON配置文件获取字段规则
      *
@@ -61,6 +57,7 @@ public class DataBaseServiceImpl implements DataBaseService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return map;
     }
 
@@ -75,11 +72,9 @@ public class DataBaseServiceImpl implements DataBaseService {
     @Override
     public Connection dataBaseConnection(String url, String username, String password) {
         ClassJDBC jdbc = new ClassJDBC(url, username, password);
-        //格式 ClassJDBC jdbc = new ClassJDBC("jdbc:mysql://127.0.0.1:3306", "root", "123456");
         Connection connection = jdbc.getConnection();
         System.out.println(connection);
 
-        //写成 @bean 会不会更好？
         return connection;
     }
 
@@ -97,7 +92,7 @@ public class DataBaseServiceImpl implements DataBaseService {
             if (ps.executeQuery().next()) {
                 log.warn("数据库已存在：{}", dbName);
             } else {
-                ps = connection.prepareStatement("CREATE DATABASE " + dbName);
+                ps = connection.prepareStatement("CREATE DATABASE " + dbName +" DEFAULT CHARACTER SET utf8");
                 ps.executeUpdate();//执行sql语句
                 log.info("数据库{}创建成功", dbName);
             }
@@ -165,13 +160,11 @@ public class DataBaseServiceImpl implements DataBaseService {
             //格式示例： id int (32)
             sql.append(field.getFieldName()).append(" ").append(field.getFieldType());
             if (STRING_INT.equals(field.getFieldType())) {
-                // sql.append("(" + FIELD_INT_TYPE_LENGTH + ")");
                 sql.append(String.format("(%s)", FIELD_INT_TYPE_LENGTH));
                 if (AUTO_INCREMENT.equals(field.getLogic())) {
                     sql.append(" auto_increment");
                 }
             } else if (STRING_VARCHAR.equals(field.getFieldType())) {
-                // sql.append("(" + FIELD_VARCHAR_TYPE_LENGTH + ")");
                 sql.append(String.format("(%s)", FIELD_VARCHAR_TYPE_LENGTH));
             }
 
@@ -183,8 +176,6 @@ public class DataBaseServiceImpl implements DataBaseService {
             if (field.getPrimary()) {
                 primary.append(field.getFieldName()).append(",");
             }
-            // System.out.println(field.getPrimary());
-
         }
         if (primary.length() > 0) {
             primary.deleteCharAt(primary.length() - 1);

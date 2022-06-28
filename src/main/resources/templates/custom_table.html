@@ -17,10 +17,9 @@
         <div class="content">
             <h2 id="stacked-form" class="content-subhead">自定义规则生成<a href="#stacked-form" class="content-link"
                                                                     title="Heading anchor"></a></h2>
-            <p>格式：</p>
-            <p>UUID：448369fa-2a3d-4c90-9be6-67e5dae8ed4e</p>
-            <p>NanoID（32位）：FEbXpOPma1kXDVuovbmGk</p>
-            <p>3.xxoxxxoxx</p>
+            <p>注意：</p>
+            <p>1.数据库不存在会进行创建，存在时会直接使用</p>
+            <p>2.表不存在时会进行创建，存在时会删除重建</p>
 
             <form class="pure-form" th:action="@{/rules}" method="post">
                 <fieldset>
@@ -29,10 +28,10 @@
                 <div class="table-info">
                     <label for="database-name">数据库名：</label>
                     <input id="database-name" class="pure-u-1-5" type="text"
-                           placeholder="不存在时会创建">
+                           required>
                     <label for="table-name">表名：</label>
                     <input id="table-name" class="pure-u-1-5" type="text"
-                           placeholder="不存在时会创建">
+                           required>
                     <label for="table-size">数据大小：</label>
                     <select id="table-size" class="pure-input-1-5">
                         <option>100</option>
@@ -52,7 +51,7 @@
                             <th>生成逻辑</th>
                             <th>前缀</th>
                             <th>主键</th>
-                            <!--<th>删除</th>-->
+                            <th id="field-item-delete-th"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,14 +62,14 @@
                                                                    title="字段"></td>
                             <td class="highlight fieldType"><select class="fieldTypeSelect" name="fieldType"
                                                                     onclick="fieldTypeOnclick(this)"></select></td>
-                            <td class="logic"><select class="logicSelect" name="logic"></select></td>
+                            <td class="logic"><select class="logicSelect" name="logic"
+                                                      onclick="fieldLogicOnclick(this)"></select></td>
                             <td class="prefix"><input class="prefixInput" name="prefix"></td>
                             <td class="primary"><input type="checkbox" class="primary-checkbox" name="primary"></td>
-                            <!--<td class="delete">-->
-                            <!--    <button class="delete-button">x</button>-->
-                            <!--</td>-->
-                        </tr>
 
+                            <td class="field-item-delete"><input class="field-item-delete-button" type="button"
+                                                                 value="X" onclick="delField(this)"></td>
+                        </tr>
                         <!--测试项 2-->
                         <tr class="field-item">
                             <td class="highlight fieldName"><input class="fieldNameInput" name="fieldName" value="name">
@@ -78,23 +77,31 @@
                             <td class="highlight fieldType"><select class="fieldTypeSelect" name="fieldType"
                                                                     onclick="fieldTypeOnclick(this)"></select>
                             </td>
-                            <td class="logic"><select class="logicSelect" name="logic"></select></td>
+                            <td class="logic"><select class="logicSelect" name="logic"
+                                                      onclick="fieldLogicOnclick(this)"></select></td>
                             <td class="prefix"><input class="prefixInput" name="prefix"></td>
                             <td class="primary"><input type="checkbox" class="primary-checkbox" name="primary"></td>
-                            <!--<td class="delete">-->
-                            <!--    <button class="delete-button">X</button>-->
-                            <!--</td>-->
+
+                            <td class="field-item-delete"><input class="field-item-delete-button" type="button"
+                                                                 value="X" onclick="delField(this)"></td>
                         </tr>
                         </tbody>
+
                     </table>
                 </div>
 
-                <input id="add-field" class="pure-button" value="添加字段" onclick="addField(event)"/>
+                <button id="add-field" class="pure-button pure-button-primary"
+                        onclick="addField(event)">添加字段
+                </button>
                 <input id="fromSubmit" type="submit" value="生成" class="pure-button pure-button-primary"
                        onclick="formSubmit(event)"/>
             </form>
         </div>
         <th:block th:include="common::footer"></th:block>
+    </div>
+
+    <div id="hidden-element" style="display: none">
+
     </div>
 </div>
 </body>

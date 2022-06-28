@@ -6,10 +6,13 @@
     <!--<meta name="description" content="数据库 模拟数据生成工具">-->
     <title>Kisara</title>
     <link rel="stylesheet" th:href="@{/css/pure/pure.css}">
-    <link rel="stylesheet" href="https://www.purecss.cn/css/main-grid.css">
-    <link rel="stylesheet" href="https://www.purecss.cn/css/main.css">
-    <link rel="stylesheet" href="https://www.purecss.cn/css/home.css">
-    <link rel="stylesheet" href="https://www.purecss.cn/css/baby-blue.css">
+    <link rel="stylesheet" th:href="@{/css/pure/pureio.css}">
+    <!--<link rel="stylesheet" href="https://www.purecss.cn/css/main-grid.css">-->
+    <!--<link rel="stylesheet" href="https://www.purecss.cn/css/main.css">-->
+    <!--<link rel="stylesheet" href="https://www.purecss.cn/css/home.css">-->
+    <!--<link rel="stylesheet" href="https://www.purecss.cn/css/baby-blue.css">-->
+    <!--<link rel="stylesheet" href="https://pure-css.ru/templates/Pure/css/pureio.css">-->
+    <!--<link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">-->
 
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <script></script>
@@ -36,7 +39,12 @@
                 <li class="pure-menu-item">
                     <a th:href="@{/data_view}" class="pure-menu-link">数据浏览</a>
                 </li>
+
                 <li class="pure-menu-item menu-item-divided">
+                    <a th:href="@{/configuration}" class="pure-menu-link">配置</a>
+                </li>
+
+                <li class="pure-menu-item">
                     <a th:href="@{/logout}" class="pure-menu-link">注销</a>
                 </li>
             </ul>

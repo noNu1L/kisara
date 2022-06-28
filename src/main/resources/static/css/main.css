@@ -1,3 +1,7 @@
+body {
+    font-family: "Microsoft soft", sans-serif
+}
+
 
 .field-item .fieldName .fieldNameInput,
 .field-item .prefix .prefixInput,
@@ -14,7 +18,7 @@
     border: 0;
     border-radius: 0;
     box-sizing: border-box;
-    font-family: "Microsoft soft"
+
 }
 
 .field-item .fieldName .fieldNameInput {
@@ -86,19 +90,36 @@
     color: #cbcbcb;
 }
 
-.delete-button {
+
+.field-item .field-item-delete, #field-item-delete-th {
+    /*padding: 2px;*/
+    padding: 0;
+    width: 0;
+}
+
+.field-item-delete-button {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 15px;
+    /*height: 20px;*/
+    line-height: 52px;
+    color: white;
+    font-weight: bolder;
+    background-color: #d64422;
 
 }
 
 .primary-checkbox {
-    margin-left: 10px;
+    margin-left: 15px;
+    /*margin: auto 0;*/
 }
 
 #database_connection > .pure-menu-link {
-    color: #e08989;
+    color: #e15500;
 }
 
-#connection-InfoRecord {
+#connection-InfoRecord, #add-field {
     margin-right: 20px;
-    background-color: #e08989;
+    background-color: #e15500;
 }

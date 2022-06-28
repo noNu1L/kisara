@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Map;
 
 import static com.zhong.kisara.utils.Constants.CONNECTION_STATUS;
@@ -40,8 +41,18 @@ public class DataController {
         // Connection connection = jdbc.getConnection();
         // PreparedStatement ps = null;
         Connection connection = (Connection) httpServletRequest.getSession().getAttribute(CONNECTION_STATUS);
+        try {
+            if (connection.isClosed()) {
+                return Result.ok("连接已关闭");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         if (connection == null) {
             return Result.ok("连接信息无效");
+
+
         }
         dataService.createDataBase(dataBase.getDataBaseName(), connection);
         dataService.createData(dataBase.getDataBaseName(), dataBase.getTableName(), connection, dataBase.getFieldData(), dataBase.getDataSize());

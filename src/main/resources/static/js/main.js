@@ -1,5 +1,5 @@
-let fieldTypeTags = document.querySelectorAll(".fieldType");
-let fieldItemTags = document.querySelectorAll(".field-item");
+const CONNECTION_STATUS_ID_NAME = "connection-status";
+const FIELD_ITEM_CLASS_NAME = "field-item"
 
 let fieldTypes = null;
 
@@ -28,7 +28,7 @@ window.onload = () => {
         .then((response) => {
             console.log(response);
             if (response.data === true) {
-                let connectionStatusTag = document.getElementById("connection-status");
+                let connectionStatusTag = document.getElementById(CONNECTION_STATUS_ID_NAME);
                 connectionStatusTag.innerHTML = "数据库已连接"
                 connectionStatusTag.style.color = "#006ed3"
                 connectionStatus = true;
@@ -38,13 +38,13 @@ window.onload = () => {
             console.log(error);
         });
 
+    // 字段初始化
     axios.get('/getFieldRule')
         .then(function (response) {
             if (response.status === 200) {
                 fieldTypes = response.data;
-
                 // 初始化 遍历页面每一项字段
-                fieldItemTags.forEach(fieldItemTag => {
+                for (let fieldItemTag of document.getElementsByClassName(FIELD_ITEM_CLASS_NAME)) {
                     for (let fieldTypeSelect of fieldItemTag.getElementsByClassName("fieldTypeSelect")) {
                         for (let fieldType in fieldTypes) {
                             let option = document.createElement("option")
@@ -59,7 +59,7 @@ window.onload = () => {
                             logicSelect.appendChild(option)
                         }
                     }
-                })
+                }
             }
         })
         .catch(function (error) {
@@ -73,26 +73,23 @@ window.onload = () => {
  */
 let fieldTypeOnclick = (tag) => {
 
-    // TODO 获取有更好的写法
     //从父节点获取，避免 HTML 改动出错
-    let parentNode = tag.parentNode.parentNode;
-    parentNode.childNodes.forEach(childNode => {
+    let parentTrTag = tag.parentElement.parentElement
+    let logicSelect = parentTrTag.getElementsByClassName("logicSelect");
+    removeChildNode(parentTrTag, "logicSelect");
+    for (let fieldType of fieldTypes[tag.value]) {
+        let option = document.createElement("option")
+        option.innerHTML = fieldType
+        logicSelect[0].appendChild(option)
+    }
+}
 
-        if (!isBlank(childNode.classList) && childNode.classList.contains("logic")) {
-            let logic = childNode
-            removeChildNode(logic, "logicSelect");
-
-            logic.childNodes.forEach(x => {
-                if (!isBlank(x.classList) && x.classList.contains("logicSelect")) {
-                    for (let fieldType of fieldTypes[tag.value]) {
-                        let option = document.createElement("option")
-                        option.innerHTML = fieldType
-                        x.appendChild(option)
-                    }
-                }
-            })
-        }
-    })
+let fieldLogicOnclick = (tag) => {
+    if (tag.value === "自增") {
+        tag.parentElement.parentElement
+            .getElementsByClassName("primary-checkbox")[0]
+            .checked = true
+    }
 }
 
 /**
@@ -112,7 +109,6 @@ let isBlank = (obj) => {
 let formSubmit = (event) => {
     //阻止默认表单提交
     event.preventDefault();
-
     if (!connectionStatus) {
         alert("请先连接数据库")
 
@@ -131,8 +127,22 @@ let addField = (event) => {
     //阻止默认表单提交
     event.preventDefault();
     //克隆 / 复制 添加一个节点
-    let node = fieldItemTags[0].cloneNode(true);
-    fieldItemTags[0].parentNode.append(node);
+    let fieldElement = document.querySelectorAll(".field-item");
+    let node = fieldElement[0].cloneNode(true);
+    fieldElement[0].parentNode.append(node);
+}
+
+/**
+ * 删除字段
+ * @param tag
+ * @returns {boolean}
+ */
+let delField = (tag) => {
+    if (document.querySelectorAll(".field-item").length === 1) {
+        alert("至少留一个吧")
+        return false;
+    }
+    tag.parentNode.parentNode.parentNode.removeChild(tag.parentNode.parentNode)
 }
 
 /**
@@ -190,7 +200,7 @@ let checkTableData = () => {
     if (checkName(dataBaseName, "数据库名") && checkName(tableName, "表名")) {
         tableData.dataBaseName = dataBaseName;
         tableData.tableName = tableName;
-        tableData.dataSize = tableSize;
+        tableData.dataSize = tableSize.replace("_", "");
         return true
     } else {
         // alert("请填写正确数据库名和表名")
@@ -205,6 +215,7 @@ let checkTableData = () => {
 let checkFieldData = () => {
     let allPrimary = document.querySelectorAll(".primary-checkbox");
 
+    let autoIncrementCount = 0;
     allPrimary.forEach(x => {
             console.log(x.checked)
             console.log(x.name)
@@ -219,26 +230,37 @@ let checkFieldData = () => {
 
     let fieldDataArray = [];
     for (let i = 0; i < dataLength; i++) {
+        let index = i + 1
         if (allFieldType[i].value === "int" && isNaN(allPrefixInput[i].value)) {
-            alert("数据类型与前缀不合符")
+            alert("第" + index + "行字段数据类型与前缀不合符")
             return false;
         }
         if ((allFieldType[i].value === "date" && !isBlank(allPrefixInput[i].value)) ||
+            (allFieldType[i].value === "double" && !isBlank(allPrefixInput[i].value)) ||
             (allLogicSelect[i].value === "自增" && !isBlank(allPrefixInput[i].value))) {
-            alert("不允许填写前缀")
+            alert("第" + index + "行字段不允许填写前缀")
             return false;
         }
         if (allLogicSelect[i].value === "仅前缀" && isBlank(allPrefixInput[i].value)) {
-            alert("请填写前缀")
+            alert("第" + index + "行字段请填写前缀")
             return false;
         }
 
+        //多自增判断
+        if (allLogicSelect[i].value === "自增") {
+            autoIncrementCount++;
+            if (autoIncrementCount >= 2) {
+                alert("不允许存在多个自增，请检查生成逻辑")
+                return false;
+            }
+        }
         let tempData = Object.call(null)
         tempData[allFieldNameInput[i].name] = allFieldNameInput[i].value;
         tempData[allFieldType[i].name] = allFieldType[i].value;
         tempData[allLogicSelect[i].name] = allLogicSelect[i].value;
         tempData[allPrefixInput[i].name] = allPrefixInput[i].value;
         tempData[allPrimary[i].name] = allPrimary[i].checked;
+
 
         fieldDataArray[i] = tempData
     }
@@ -247,7 +269,9 @@ let checkFieldData = () => {
     return true
 }
 
-
+/**
+ * 提交数据
+ */
 let summitData = () => {
     console.log(tableData.fieldData)
     axios({
@@ -262,6 +286,7 @@ let summitData = () => {
             // console.log(response);
         })
         .catch((error) => {
+            alert("生成失败，请检查字段 / 数据库名 / 表名相关信息有无错误")
             console.log(error);
         });
 }
@@ -296,6 +321,10 @@ let removeChildNode = (node, parenClassName) => {
     }
 }
 
+/**
+ * 连接数据库
+ * @param event
+ */
 let connectionSubmit = (event) => {
     event.preventDefault();
     let url = document.getElementById("dataBase-url").value;
@@ -326,7 +355,7 @@ let connectionSubmit = (event) => {
                     localStorage.setItem("username", username);
                     localStorage.setItem("password", password);
                 }
-
+                location.reload();
             } else {
                 alert(response.data.errorMsg)
                 return;
