@@ -9,5 +9,5 @@ import java.util.List;
  * @author zhonghanbo
  */
 public interface DataService {
-    boolean addData(Connection connection, String tableName,List<TableField> tableFieldList, Long dataSize);
+    boolean addData(String dbName, String tableName, List<TableField> tableFieldList, Long dataSize);
 }

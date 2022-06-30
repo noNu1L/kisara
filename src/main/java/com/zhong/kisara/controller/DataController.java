@@ -36,10 +36,6 @@ public class DataController {
 
     @PostMapping("/rules")
     public Result generateData(@RequestBody DataBase dataBase, HttpServletRequest httpServletRequest) {
-        System.out.println(dataBase);
-        // ClassJDBC jdbc = new ClassJDBC("jdbc:mysql://127.0.0.1:3306", "root", "123456");
-        // Connection connection = jdbc.getConnection();
-        // PreparedStatement ps = null;
         Connection connection = (Connection) httpServletRequest.getSession().getAttribute(CONNECTION_STATUS);
         try {
             if (connection.isClosed()) {
@@ -51,8 +47,6 @@ public class DataController {
 
         if (connection == null) {
             return Result.ok("连接信息无效");
-
-
         }
         dataService.createDataBase(dataBase.getDataBaseName(), connection);
         dataService.createData(dataBase.getDataBaseName(), dataBase.getTableName(), connection, dataBase.getFieldData(), dataBase.getDataSize());

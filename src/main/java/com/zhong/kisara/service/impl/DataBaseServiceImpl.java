@@ -8,12 +8,6 @@ import com.zhong.kisara.service.DataBaseService;
 import com.zhong.kisara.service.DataService;
 import com.zhong.kisara.utils.ClassJDBC;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +18,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.zhong.kisara.utils.Constants.*;
 
@@ -36,6 +33,8 @@ public class DataBaseServiceImpl implements DataBaseService {
 
     @Resource
     private DataService dataService;
+
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(ADD_DATA_THREADS);
 
     /**
      * 读取JSON配置文件获取字段规则
@@ -92,7 +91,7 @@ public class DataBaseServiceImpl implements DataBaseService {
             if (ps.executeQuery().next()) {
                 log.warn("数据库已存在：{}", dbName);
             } else {
-                ps = connection.prepareStatement("CREATE DATABASE " + dbName +" DEFAULT CHARACTER SET utf8");
+                ps = connection.prepareStatement("CREATE DATABASE " + dbName + " DEFAULT CHARACTER SET utf8");
                 ps.executeUpdate();//执行sql语句
                 log.info("数据库{}创建成功", dbName);
             }
@@ -119,18 +118,35 @@ public class DataBaseServiceImpl implements DataBaseService {
             ps = connection.prepareStatement(String.format("SHOW TABLES LIKE'%s'", tableName));
 
             if (ps.executeQuery().next()) {
-                log.warn("表已存在：{}", tableName);
-            } else {
-                String sql = createTableSql(tableName, fieldList);
-                System.out.println(sql);
-
-                if (KisaraApplication.noCreateTable) {
-                    return;
-                }
-                connection.prepareStatement(sql).execute();
-                dataService.addData(connection, tableName, fieldList, dataSize);
+                log.warn("表已存在：{}，删除该表并重建", tableName);
+                connection.prepareStatement("DROP TABLE " + tableName).execute();
             }
-        } catch (SQLException e) {
+            String sql = createTableSql(tableName, fieldList);
+            if (KisaraApplication.noCreateTable) {
+                return;
+            }
+            connection.prepareStatement(sql).execute();
+
+            long beginTime = System.currentTimeMillis();
+            long partDataSize = dataSize / ADD_DATA_THREADS;
+            CountDownLatch latch = new CountDownLatch(ADD_DATA_THREADS);
+            for (int i = 0; i < ADD_DATA_THREADS; i++) {
+                threadPool.execute(() -> {
+                    try {
+                        dataService.addData(dbName, tableName, fieldList, partDataSize);
+                    } catch (Exception e) {
+                        log.error("插入数据异常");
+                    } finally {
+                        latch.countDown();
+                    }
+                });
+            }
+            latch.await();
+            long endTime = System.currentTimeMillis();
+
+            log.info("{} 条数据共耗时：{} 毫秒 ", dataSize, (endTime - beginTime));
+            // threadPool.shutdown();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ClassJDBC.closeResource(null, ps, null);
@@ -159,12 +175,12 @@ public class DataBaseServiceImpl implements DataBaseService {
 
             //格式示例： id int (32)
             sql.append(field.getFieldName()).append(" ").append(field.getFieldType());
-            if (STRING_INT.equals(field.getFieldType())) {
+            if (FIELD_TYPE_INT.equals(field.getFieldType())) {
                 sql.append(String.format("(%s)", FIELD_INT_TYPE_LENGTH));
                 if (AUTO_INCREMENT.equals(field.getLogic())) {
                     sql.append(" auto_increment");
                 }
-            } else if (STRING_VARCHAR.equals(field.getFieldType())) {
+            } else if (FIELD_TYPE_VARCHAR.equals(field.getFieldType())) {
                 sql.append(String.format("(%s)", FIELD_VARCHAR_TYPE_LENGTH));
             }
 
@@ -182,7 +198,7 @@ public class DataBaseServiceImpl implements DataBaseService {
             sql.append(",primary key (").append(primary).append(")");
         }
         sql.append(")");
-        log.info("sql:{}", sql);
+        log.info("创建表sql:{}", sql);
         return sql.toString();
     }
 

@@ -1,5 +1,6 @@
 package com.zhong.kisara.controller;
 
+import com.zhong.kisara.dto.DataBaseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageController {
 
     /**
-     * 主页 / 总览
+     * 主页 / 总览 页面
      *
      * @param model 模型
      * @return {@link String}
@@ -22,13 +23,13 @@ public class PageController {
     }
 
     /**
-     * 自定义表
+     * 自定义表页面
      *
      * @param model 模型
      * @return {@link String}
      */
     @GetMapping(value = {"/custom_table"})
-    public String custom_table(Model model) {
+    public String customTable(Model model) {
         return "/custom_table";
     }
 
@@ -42,7 +43,6 @@ public class PageController {
 
         return "/connection";
     }
-
 
     /**
      * 测试 页面

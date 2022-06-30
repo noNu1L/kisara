@@ -49,7 +49,7 @@ public class VarcharTypeImpl implements VarcharType {
      */
     @Override
     public String cnName(Gender gender) {
-        StringBuilder name = new StringBuilder();
+        StringBuilder name;
         int randomInt = RandomUtil.randomInt(2);
 
         if (gender == Gender.FEMALE) {
@@ -81,6 +81,7 @@ public class VarcharTypeImpl implements VarcharType {
         String first = TEL_FIRST[index];
         String second = String.valueOf(RandomUtil.randomInt(1, 888) + 10000).substring(1);
         String thrid = String.valueOf(RandomUtil.randomInt(1, 9100) + 10000).substring(1);
+
         return first + second + thrid;
     }
 

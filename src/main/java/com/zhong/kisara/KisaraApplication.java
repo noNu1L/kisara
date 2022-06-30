@@ -9,7 +9,7 @@ public class KisaraApplication {
     // 断点
     public static final boolean noCreateTable = false;
 
-    public static final boolean noCreateData = false;
+    public static final boolean noCreateData = true;
 
     public static final boolean justCheckData = false;
 
