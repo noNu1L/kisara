@@ -129,6 +129,8 @@ public class DataBaseServiceImpl implements DataBaseService {
 
             long beginTime = System.currentTimeMillis();
             long partDataSize = dataSize / ADD_DATA_THREADS;
+            long remainder = dataSize % ADD_DATA_THREADS;
+
             CountDownLatch latch = new CountDownLatch(ADD_DATA_THREADS);
             for (int i = 0; i < ADD_DATA_THREADS; i++) {
                 threadPool.execute(() -> {
@@ -140,6 +142,9 @@ public class DataBaseServiceImpl implements DataBaseService {
                         latch.countDown();
                     }
                 });
+            }
+            if (remainder > 0) {
+                dataService.addData(dbName, tableName, fieldList, remainder);
             }
             latch.await();
             long endTime = System.currentTimeMillis();

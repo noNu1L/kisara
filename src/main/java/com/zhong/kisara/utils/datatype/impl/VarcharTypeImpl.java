@@ -2,10 +2,12 @@ package com.zhong.kisara.utils.datatype.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.zhong.kisara.utils.Gender;
 import com.zhong.kisara.utils.datatype.VarcharType;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.zhong.kisara.utils.Constants.NANOID_SIZE;
@@ -17,9 +19,7 @@ import static com.zhong.kisara.utils.Constants.NANOID_SIZE;
 public class VarcharTypeImpl implements VarcharType {
 
     private final static String[] EMAIL_SUFFIX = "@gmail.com,@yahoo.com,@msn.com,@hotmail.com,@aol.com,@ask.com,@live.com,@qq.com,@0355.net,@163.com,@163.net,@263.net,@3721.net,@yeah.net,@googlemail.com,@126.com,@sina.com,@sohu.com,@yahoo.com.cn".split(",");
-    private final static String BASE = "abcdefghijklmnopqrstuvwxyz0123456789";
     private final static String[] TEL_FIRST = "134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153".split(",");
-
     private final static String[] SURNAME = {"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈", "褚", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许",
             "何", "吕", "施", "张", "孔", "曹", "严", "华", "金", "魏", "陶", "姜", "戚", "谢", "邹", "喻", "柏", "水", "窦", "章", "云", "苏", "潘", "葛", "奚", "范", "彭", "郎",
             "鲁", "韦", "昌", "马", "苗", "凤", "花", "方", "俞", "任", "袁", "柳", "酆", "鲍", "史", "唐", "费", "廉", "岑", "薛", "雷", "贺", "倪", "汤", "滕", "殷",
@@ -49,23 +49,18 @@ public class VarcharTypeImpl implements VarcharType {
      */
     @Override
     public String cnName(Gender gender) {
-        StringBuilder name;
-        int randomInt = RandomUtil.randomInt(2);
+        int randomInt = RandomUtil.randomInt(1, 3);
 
         if (gender == Gender.FEMALE) {
-            name = new StringBuilder(SURNAME[RandomUtil.randomInt(SURNAME.length - 1)]);
-            for (int i = 0; i <= randomInt; i++) {
-                name.append(GIRL.charAt(RandomUtil.randomInt(GIRL.length() - 1)));
-            }
+            return RandomUtil.randomEle(Arrays.asList(SURNAME)) + RandomUtil.randomString(GIRL, randomInt);
         } else if (gender == Gender.MALE) {
-            name = new StringBuilder(SURNAME[RandomUtil.randomInt(SURNAME.length - 1)]);
-            for (int i = 0; i <= randomInt; i++) {
-                name.append(BOY.charAt(RandomUtil.randomInt(BOY.length() - 1)));
-            }
-        } else {
-            name = new StringBuilder(randomInt == 0 ? cnName(Gender.MALE) : cnName(Gender.FEMALE));
+            return RandomUtil.randomEle(Arrays.asList(SURNAME)) + RandomUtil.randomString(BOY, randomInt);
         }
-        return name.toString();
+
+        if (randomInt == 1) {
+            return cnName(Gender.MALE);
+        }
+        return cnName(Gender.FEMALE);
     }
 
 
@@ -76,13 +71,12 @@ public class VarcharTypeImpl implements VarcharType {
      */
     @Override
     public String phone() {
+        StringBuilder phoneNum = new StringBuilder();
+        phoneNum.append(TEL_FIRST[RandomUtil.randomInt(0, TEL_FIRST.length)])
+                .append(String.valueOf(RandomUtil.randomInt(1, 888) + 10000).substring(1))
+                .append(String.valueOf(RandomUtil.randomInt(1, 9100) + 10000).substring(1));
 
-        int index = RandomUtil.randomInt(0, TEL_FIRST.length);
-        String first = TEL_FIRST[index];
-        String second = String.valueOf(RandomUtil.randomInt(1, 888) + 10000).substring(1);
-        String thrid = String.valueOf(RandomUtil.randomInt(1, 9100) + 10000).substring(1);
-
-        return first + second + thrid;
+        return String.valueOf(phoneNum);
     }
 
     /**
@@ -92,15 +86,8 @@ public class VarcharTypeImpl implements VarcharType {
      */
     @Override
     public String email() {
-
-        int length = RandomUtil.randomInt(3, 10);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int number = (int) (Math.random() * BASE.length());
-            sb.append(BASE.charAt(number));
-        }
-        sb.append(EMAIL_SUFFIX[(int) (Math.random() * EMAIL_SUFFIX.length)]);
-        return sb.toString();
+        return RandomUtil.randomStringWithoutStr(RandomUtil.randomInt(4, 10), "") +
+                RandomUtil.randomEle(Arrays.asList(EMAIL_SUFFIX));
     }
 
     @Override

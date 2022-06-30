@@ -16,6 +16,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.management.ManagementFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -87,7 +88,7 @@ public class DataServiceImpl implements DataService {
             ps = connection.prepareStatement(String.valueOf(sql));
             // 填充数据，并添加到批处理
             for (int i = 0; i < dataSize; i++) {
-                Runtime run = Runtime.getRuntime();
+
                 for (int j = 0; j < tableFieldList.size(); j++) {
                     TableField itemField = tableFieldList.get(j);
 
@@ -120,7 +121,12 @@ public class DataServiceImpl implements DataService {
                 }
                 ps.addBatch();
                 sql = null;
-                // run.gc();
+
+                //避免超多数据情况下累积引起OOM
+                if ((i + 1) % EXECUTE_BATCH_NUM == 0) {
+                    ps.executeBatch();
+                    log.info("{} tempExecuteBatch", Thread.currentThread().getName());
+                }
             }
             ps.executeBatch();
             connection.commit();

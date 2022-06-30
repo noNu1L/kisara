@@ -26,9 +26,11 @@ public class Constants {
 
 
     /**
-     * 添加数据时 线程数 数据过大时容易出现OOM
+     * 添加数据时 线程数 数据过大时容易出现 OOM / 初始值 10，20_0000
+     * <p> ADD_DATA_THREADS 建议参考计算机核心数与超线程数，10 核 => ADD_DATA_THREADS = 10，最大不建议超过超线程数 20
+     * <p> 出现 OOM 时，可尝试降低 EXECUTE_BATCH_NUM
      */
-    public static final Integer ADD_DATA_THREADS = 20;
-
+    public static final Integer ADD_DATA_THREADS = 10;
+    public static final Integer EXECUTE_BATCH_NUM = 20_0000;
 
 }

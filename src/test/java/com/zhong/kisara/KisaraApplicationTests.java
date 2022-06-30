@@ -1,8 +1,10 @@
 package com.zhong.kisara;
 
+import cn.hutool.core.util.RandomUtil;
 import com.zhong.kisara.dto.DataBaseDto;
 import com.zhong.kisara.service.DataBaseService;
 import com.zhong.kisara.utils.ClassJDBC;
+import com.zhong.kisara.utils.Gender;
 import com.zhong.kisara.utils.datatype.DateTimeType;
 import com.zhong.kisara.utils.datatype.DoubleType;
 import com.zhong.kisara.utils.datatype.VarcharType;
@@ -31,11 +33,11 @@ class KisaraApplicationTests {
     // @Resource
     // private DateType dateType;
 
-    @Resource
-    private DateTimeType dateTimeType;
-
-    @Resource
-    private DataBaseDto dataBaseDto;
+    // @Resource
+    // private DateTimeType dateTimeType;
+    //
+    // @Resource
+    // private DataBaseDto dataBaseDto;
 
 
     @Test
@@ -49,7 +51,9 @@ class KisaraApplicationTests {
         // long workerId = IdUtil.getWorkerId(dataCenterId, 16);
         // System.out.println(IdUtil.getSnowflake(workerId, dataCenterId).nextId());
         // System.out.println(dateTimeType.randomDateTime());
-
+        for (int i = 0; i < 100; i++) {
+            System.out.println(varcharType.email());
+        }
     }
 
     @Test
