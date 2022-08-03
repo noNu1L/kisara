@@ -17,7 +17,6 @@ public class KisaraApplication {
     public static void main(String[] args) {
         SpringApplication.run(KisaraApplication.class, args);
 
-
     }
 
 }

@@ -1,6 +1,7 @@
 const CONNECTION_STATUS_ID_NAME = "connection-status";
 const FIELD_ITEM_CLASS_NAME = "field-item"
 
+
 let fieldTypes = null;
 
 let tableData = {

@@ -1,7 +1,6 @@
 package com.zhong.kisara.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.zhong.kisara.KisaraApplication;
 import com.zhong.kisara.bean.TableField;
 import com.zhong.kisara.dto.DataBaseDto;
 import com.zhong.kisara.service.DataService;
@@ -12,14 +11,11 @@ import com.zhong.kisara.utils.datatype.DoubleType;
 import com.zhong.kisara.utils.datatype.VarcharType;
 import com.zhong.kisara.utils.datatype.impl.IntTypeImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.management.ManagementFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -71,7 +67,7 @@ public class DataServiceImpl implements DataService {
             long bTime = System.currentTimeMillis();
             connection.setAutoCommit(false);
             // 预编译 sql 语句
-            // insert into test(id,name,age) value(?,?,?,)
+            // insert into test(id,name,age) value(?,?,?,?)
             StringBuilder fieldNames = new StringBuilder();
             StringBuilder fieldData = new StringBuilder();
             for (TableField tableField : tableFieldList) {
@@ -119,8 +115,8 @@ public class DataServiceImpl implements DataService {
                             break;
                     }
                 }
+
                 ps.addBatch();
-                sql = null;
 
                 //避免超多数据情况下累积引起OOM
                 if ((i + 1) % EXECUTE_BATCH_NUM == 0) {
@@ -130,6 +126,7 @@ public class DataServiceImpl implements DataService {
             }
             ps.executeBatch();
             connection.commit();
+            ps.clearBatch();
             // 结束计时
             long eTime = System.currentTimeMillis();
             log.info("{} => 生成 {} 条数据耗时：{} 毫秒 ", Thread.currentThread().getName(), dataSize, (eTime - bTime));
